@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "metrics": {
+    "production_loc": 2360,
+    "production_files": 21,
+    "production_packages": 13,
+    "test_files": 9,
+    "production_functions": 72,
+    "decision_points": 81
+  },
+  "persistence": {
+    "module": "go.etcd.io/bbolt",
+    "entities": ["Candidate", "Score", "ExamRecord", "AuditEvent", "ImportBatch"],
+    "reopen_test": "TestPersistenceSurvivesReopen"
+  },
+  "workflows": [
+    {"steps": ["validate candidate identity", "validate score components", "calculate average and persist", "return saved record"], "test": "TestWorkflowCreateAndRank"},
+    {"steps": ["load records", "normalize search term", "match by id or name", "render stable table"], "test": "TestWorkflowQueryByName"},
+    {"steps": ["receive request context", "process records in order", "stop on cancellation before writes", "export stable report"], "test": "TestWorkflowExport"}
+  ]
+}
